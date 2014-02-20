@@ -268,9 +268,9 @@ lnchr::sdl::library::~library()
 
 lnchr::sdl::window::window()
 {
-    ptr = SDL_CreateWindow("lnchr", SDL_WINDOWPOS_CENTERED,
-			 SDL_WINDOWPOS_CENTERED, WIDTH,
-			 HEIGHT, SDL_WINDOW_BORDERLESS);
+    ptr = SDL_CreateWindow("Lnchr", SDL_WINDOWPOS_CENTERED,
+			   SDL_WINDOWPOS_CENTERED, WIDTH,
+			   HEIGHT, SDL_WINDOW_BORDERLESS);
 }
 
 lnchr::sdl::window::~window()
