@@ -364,24 +364,6 @@ int main(int argc, const char * * argv)
 	displays.push_back(std::move(d));
     }
 
-    /* Firefox */
-    sdl::png_texture firefox_icon(renderer, "/usr/share/icons/hicolor/32x32/apps/firefox.png");
-    if (firefox_icon.error()) return 1;
-    name_layout.text("Firefox");
-    sdl::text_texture firefox_name(renderer, name_layout);
-    binding_layout.text("f");
-    sdl::text_texture firefox_binding(renderer, binding_layout);
-    std::string firefox_exec = "/usr/lib/firefox/firefox";
-
-    /* Emacs */
-    sdl::png_texture emacs_icon(renderer, "/usr/share/icons/hicolor/32x32/apps/emacs.png");
-    if (emacs_icon.error()) return 1;
-    name_layout.text("Emacs");
-    sdl::text_texture emacs_name(renderer, name_layout);
-    binding_layout.text("e");
-    sdl::text_texture emacs_binding(renderer, binding_layout);
-    std::string emacs_exec = "emacs";
-
     const int X_OFFSET = 5;
     while (true) {
         SDL_Event e;
