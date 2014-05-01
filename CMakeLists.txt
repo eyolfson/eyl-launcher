@@ -35,7 +35,12 @@ find_package(PkgConfig)
 pkg_check_modules(PANGOCAIRO pangocairo)
 pkg_check_modules(SDL2 sdl2)
 
-set(CMAKE_CXX_FLAGS "-fno-rtti -fno-exceptions -std=c++11")
+add_compile_options(
+    -std=c++11
+    -fno-exceptions
+    -fno-rtti
+    -Wall
+)
 set(EXECUTABLE_OUTPUT_PATH ${LNCHR_BINARY_DIR}/bin)
 
 add_subdirectory(src)

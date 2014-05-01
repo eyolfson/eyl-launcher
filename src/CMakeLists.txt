@@ -8,7 +8,11 @@ include_directories(
 
 configure_file(version.cpp.in version.cpp)
 
-add_executable(lnchr lnchr.cpp ${LNCHR_BINARY_DIR}/src/version.cpp)
+add_executable(lnchr
+    lnchr.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/version.cpp
+)
+
 target_link_libraries(lnchr
     ${PANGOCAIRO_LIBRARIES}
     ${SDL2_LIBRARIES}
