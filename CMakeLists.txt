@@ -1,4 +1,6 @@
 # Copyright 2014 Jon Eyolfson
+#
+# This file is distributed under the GPLv3 license
 
 cmake_minimum_required(VERSION 2.8.12)
 

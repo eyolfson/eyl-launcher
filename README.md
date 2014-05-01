@@ -19,3 +19,8 @@ A minimalistic application launcher for Linux
 ## Similar Projects
 
 - [dmenu](http://tools.suckless.org/dmenu/)
+
+## License
+
+Unless otherwise noted all files are distributed under the GPLv3 license. See
+`COPYING` for details.

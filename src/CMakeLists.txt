@@ -1,4 +1,6 @@
 # Copyright 2014 Jon Eyolfson
+#
+# This file is distributed under the GPLv3 license
 
 include_directories(
     ${LNCHR_SOURCE_DIR}/include
