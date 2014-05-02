@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 2.8.12)
 project(LNCHR)
 set(LNCHR_VERSION_MAJOR 0)
 set(LNCHR_VERSION_MINOR 0)
-set(LNCHR_VERSION_PATCH 0)
+set(LNCHR_VERSION_PATCH 1)
 set(LNCHR_VERSION_EXTRA -development)
 
 if(EXISTS "${LNCHR_SOURCE_DIR}/.git")
@@ -42,6 +42,7 @@ add_compile_options(
     -fno-exceptions
     -fno-rtti
     -Wall
+    -O2
 )
 set(EXECUTABLE_OUTPUT_PATH ${LNCHR_BINARY_DIR}/bin)
 
