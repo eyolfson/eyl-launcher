@@ -12,9 +12,9 @@ namespace lnchr {
 
 class application_info {
 public:
-  std::string name;
-  std::string icon_path;
-  std::string exec_path;
+    std::string name;
+    std::string icon_path;
+    std::string exec_path;
 };
 
 class applications {
