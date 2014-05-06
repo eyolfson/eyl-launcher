@@ -12,6 +12,7 @@ configure_file(version.cpp.in version.cpp)
 
 add_executable(lnchr
     lnchr.cpp
+    xdg.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/version.cpp
 )
 
