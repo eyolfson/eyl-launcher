@@ -1,11 +1,13 @@
 // Copyright 2014 Jon Eyolfson
 //
 // This file is distributed under the GPLv3 license
+//
+// http://standards.freedesktop.org/desktop-entry-spec/latest/
 
 #include "lnchr/xdg.hpp"
 
 #include <dirent.h>
-#include <iostream>
+#include <fstream>
 #include <map>
 #include <sstream>
 
@@ -67,7 +69,34 @@ lnchr::applications::applications()
 	if (key.empty()) {
 	    continue;
 	}
-	map.insert(std::make_pair(key, application_info()));
+	std::string line;
+	std::ifstream file(path);
+	std::string name;
+	if (file.is_open()) {
+            bool is_desktop_entry = false;
+	    std::string name_key = "Name=";
+	    while (getline(file, line)) {
+	        if (line.empty()) {
+		    continue;
+		}
+		if (line[0] == '[') {
+		    if (line == "[Desktop Entry]") {
+		        is_desktop_entry = true;
+		    }
+		    else {
+		        is_desktop_entry = false;
+		    }
+		}
+		else if (line[0] != '#' && is_desktop_entry) {
+		    if (line.substr(0, name_key.length()) == name_key) {
+		        name = line.substr(name_key.length());
+		    }
+		}
+	    }
+	}
+	if (!name.empty()) {
+	    map.insert(std::make_pair(key, application_info()));
+	}
     }
 }
 
