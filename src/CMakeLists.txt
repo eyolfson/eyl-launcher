@@ -16,6 +16,11 @@ add_executable(lnchr
     ${CMAKE_CURRENT_BINARY_DIR}/version.cpp
 )
 
+add_executable(eyl-xdg
+    xdg-main.cpp
+    xdg.cpp
+)
+
 target_link_libraries(lnchr
     ${PANGOCAIRO_LIBRARIES}
     ${SDL2_LIBRARIES}
