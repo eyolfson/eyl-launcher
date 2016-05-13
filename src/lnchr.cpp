@@ -11,6 +11,7 @@
 #include <pango/pangocairo.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_keycode.h>
+#include <fcntl.h>
 #include <unistd.h>
 
 namespace lnchr {
@@ -197,8 +198,8 @@ lnchr::pango::context::~context()
 }
 
 lnchr::pango::layout::layout(const lnchr::pango::context & c,
-			     const std::string & font,
-			     double whiteness)
+                             const std::string & font,
+                             double whiteness)
 {
     ptr = pango_layout_new(c.data());
     PangoFontDescription * d = pango_font_description_from_string(font.c_str());
@@ -255,8 +256,8 @@ lnchr::sdl::library::~library()
 lnchr::sdl::window::window()
 {
     ptr = SDL_CreateWindow("Lnchr", SDL_WINDOWPOS_CENTERED,
-			   SDL_WINDOWPOS_CENTERED, WIDTH,
-			   HEIGHT, SDL_WINDOW_BORDERLESS);
+                           SDL_WINDOWPOS_CENTERED, WIDTH,
+                           HEIGHT, SDL_WINDOW_BORDERLESS);
 }
 
 lnchr::sdl::window::~window()
@@ -275,7 +276,7 @@ lnchr::sdl::renderer::~renderer()
 }
 
 lnchr::sdl::png_texture::png_texture(lnchr::sdl::renderer & r,
-				     const std::string & filename)
+                                     const std::string & filename)
 {
     lnchr::cairo::png png(filename);
     if (png.error()) {
@@ -294,7 +295,7 @@ lnchr::sdl::png_texture::~png_texture()
 }
 
 lnchr::sdl::text_texture::text_texture(lnchr::sdl::renderer & r,
-				       const lnchr::pango::layout & l)
+                                       const lnchr::pango::layout & l)
 {
     lnchr::cairo::text text(l);
     w = text.width();
@@ -335,19 +336,19 @@ int main(int argc, const char * * argv)
     std::vector<display> displays;
     for (auto i : config) {
         std::stringstream ss;
-	ss << "/usr/share/icons/hicolor/32x32/apps/" << i.base_name << ".png";
-	std::unique_ptr<sdl::texture> icon(new sdl::png_texture(renderer, ss.str()));
-	name_layout.text(i.base_name);
-	std::unique_ptr<sdl::text_texture> name(
-	    new sdl::text_texture(renderer, name_layout));
-	binding_layout.text(i.binding);
-	std::unique_ptr<sdl::text_texture> binding(
+        ss << "/usr/share/icons/hicolor/32x32/apps/" << i.base_name << ".png";
+        std::unique_ptr<sdl::texture> icon(new sdl::png_texture(renderer, ss.str()));
+        name_layout.text(i.base_name);
+        std::unique_ptr<sdl::text_texture> name(
+            new sdl::text_texture(renderer, name_layout));
+        binding_layout.text(i.binding);
+        std::unique_ptr<sdl::text_texture> binding(
             new sdl::text_texture(renderer, binding_layout));
-	display d;
-	d.icon = std::move(icon);
-	d.name = std::move(name);
-	d.binding = std::move(binding);
-	displays.push_back(std::move(d));
+        display d;
+        d.icon = std::move(icon);
+        d.name = std::move(name);
+        d.binding = std::move(binding);
+        displays.push_back(std::move(d));
     }
 
     const int X_OFFSET = 5;
@@ -357,29 +358,45 @@ int main(int argc, const char * * argv)
             if (e.type == SDL_QUIT) {
                 break;
             }
-	    else if (e.type == SDL_KEYDOWN) {
-	        SDL_Keycode code = e.key.keysym.sym;
-		if (code == SDLK_ESCAPE) {
-		    break;
-		}
-		for (auto i : config) {
-		    if (code == SDL_GetKeyFromName(i.binding.c_str())) {
-		        execlp(i.base_name.c_str(), i.base_name.c_str(), nullptr);
-		    }
-		}
-	    }
+            else if (e.type == SDL_KEYDOWN) {
+                SDL_Keycode code = e.key.keysym.sym;
+                if (code == SDLK_ESCAPE) {
+                    break;
+                }
+                for (auto i : config) {
+                    if (code == SDL_GetKeyFromName(i.binding.c_str())) {
+                        pid_t pid = fork();
+                        if (pid == 0) {
+                            int fd = open("/dev/null", O_RDWR);
+                            if (fd < 0) {
+                                return 0;
+                            }
+                            if (dup2(fd, 1) < 0) {
+                                return 0;
+                            }
+                            if (dup2(fd, 2) < 0) {
+                                return 0;
+                            }
+                            execlp(i.base_name.c_str(), i.base_name.c_str(), nullptr);
+                        }
+                        else {
+                            return 0;
+                        }
+                    }
+                }
+            }
         }
 
-	renderer.clear();
-	int x = X_OFFSET;
-	for (auto const & i : displays) {
-	  renderer.copy(*i.icon, X_OFFSET, x);
-	  renderer.copy(*i.name, X_OFFSET * 2 + 32, x);
-	  renderer.copy(*i.binding, X_OFFSET * 2 + 32,
-			x + 32 - i.binding->height());
-	  x += X_OFFSET + 32;
-	}
-	renderer.present();
+        renderer.clear();
+        int x = X_OFFSET;
+        for (auto const & i : displays) {
+            renderer.copy(*i.icon, X_OFFSET, x);
+            renderer.copy(*i.name, X_OFFSET * 2 + 32, x);
+            renderer.copy(*i.binding, X_OFFSET * 2 + 32,
+                          x + 32 - i.binding->height());
+            x += X_OFFSET + 32;
+        }
+        renderer.present();
     }
     return 0;
 }
