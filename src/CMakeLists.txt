@@ -10,18 +10,13 @@ include_directories(
 
 configure_file(version.cpp.in version.cpp)
 
-add_executable(lnchr
-    lnchr.cpp
+add_executable(eyl-launcher
+    main.cpp
     xdg.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/version.cpp
 )
 
-add_executable(eyl-xdg
-    xdg-main.cpp
-    xdg.cpp
-)
-
-target_link_libraries(lnchr
+target_link_libraries(eyl-launcher
     ${PANGOCAIRO_LIBRARIES}
     ${SDL2_LIBRARIES}
 )

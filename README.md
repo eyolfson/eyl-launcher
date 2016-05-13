@@ -1,4 +1,4 @@
-# Lnchr
+# Launcher
 
 A minimalistic application launcher for Linux
 
