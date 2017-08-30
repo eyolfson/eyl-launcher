@@ -320,7 +320,7 @@ int main(int argc, const char * * argv)
     config.push_back({"e", "emacs"});
     config.push_back({"m", "mumble"});
     config.push_back({"s", "steam"});
-    config.push_back({"t", "terminator"});
+    config.push_back({"t", "termite"});
 
     sdl::library library;
     if (library.error()) return 1;
