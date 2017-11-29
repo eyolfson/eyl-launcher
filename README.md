@@ -1,4 +1,4 @@
-# Launcher
+# eyl Launcher
 
 A minimalistic application launcher for Linux
 
